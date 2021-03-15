@@ -8,9 +8,9 @@ function App() {
                 <h1>Federated search components</h1>
             </header>
             <ul>
-                <li><a href="#shop">Shopping cart</a></li>
-                <li><a href="#enq">Enquire about an item</a></li>
-                <li><a href="#book">Book viewing of an item</a></li>
+                <li><a href="#shop">Shopping cart (not started)</a></li>
+                <li><a href="#enq">Enquire about an item (not started)</a></li>
+                <li><a href="#book">Book viewing of an item (not started)</a></li>
             </ul>
         </div>
   );
