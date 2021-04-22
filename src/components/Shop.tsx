@@ -16,13 +16,16 @@ interface Products
 }
 
 class Shop extends React.Component<Products> {
+
+
     render() {
+
 
 
         return (
             <div>
 
-                <h1>Shop</h1>
+                <h1>Search results</h1>
 
                 <ul>
                 {this.props.products.map(

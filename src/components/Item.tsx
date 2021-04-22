@@ -1,6 +1,12 @@
 import React from 'react';
 import ClayCard from '@clayui/card';
 
+
+enum CartItemType {
+    DIGITALCOPY = 1,
+    BOOKVIEWING = 2
+}
+
 interface Product
 {
     name: string,
@@ -9,19 +15,65 @@ interface Product
     code: string
 }
 
+interface BasketItem extends Product
+{
+    type: CartItemType
+}
+
+interface Basket
+{
+    products: [BasketItem]
+}
+
 class Item extends React.Component<{product:Product}> {
 
 
     render() {
         let product = this.props.product;
         //let url = "https://axielltest.foxycart.com/cart?name="+product.name+"+&price="+product.price+"&code="+product.code+"&image=https://via.placeholder.com/75/BB3333/000000&category=Downloads";
-        let url = "https://axielltest.foxycart.com/cart?name="+product.name + " (" + product.code + ")" + "+&price="+product.price+"&code="+product.code+"&quantity_max=1";
+        //let url = "https://axielltest.foxycart.com/cart?name="+product.name + " (" + product.code + ")+&price="+product.price+"&code="+product.code+"&quantity_max=1";
+
+        /*var originalSetItem = localStorage.setItem;
+
+        localStorage.setItem = function(key, value) {
+            var event = new Event('itemInserted');
+
+            //event.value = value; // Optional..
+            //event.key = key; // Optional..
+
+            document.dispatchEvent(event);
+
+            originalSetItem.apply(this, arguments);
+        };*/
 
 
+        function addToStorage(data : Product, type: CartItemType) {
+            // TODO: Check for duplicates
+            let storage = localStorage.getItem("test") || "";
+            let basketItem: BasketItem = {name : data.name, price: data.price, stocked: data.stocked, code: data.code, type: type}
+
+            if(storage) {
+                let basket: Basket = JSON.parse(storage);
+                if(!basket.products) {
+                    console.error("WRONG FORMAT OF BASKET!");
+                    basket = {products: [basketItem]};
+                }
+
+                // Check if already in basket.
+                console.log("Adding to storage");
+                basket.products.push(basketItem);
+                localStorage.setItem("test", JSON.stringify(basket));
+            } else {
+                let basket: Basket = {products: [basketItem]};
+                console.log("No basket, creating a new.")
+                localStorage.setItem("test", JSON.stringify(basket));
+            }
+            //localStorage.setItem("test", JSON.stringify(data));
+        }
 
         return (
 
-                <ClayCard horizontal>
+                <ClayCard data-horizontal>
                     <ClayCard.Row>
                         <div className="autofit-col">
                             <img
@@ -45,10 +97,15 @@ class Item extends React.Component<{product:Product}> {
                         <div className="col-md-5">
                             <section className="autofit-row-center">
                                 <br/>
-                                <a href={url} className="btn btn-primary">
+
+                                <button onClick={() => addToStorage(product, CartItemType.DIGITALCOPY)} className="btn btn-primary">
                                     <span> Buy digital copy </span>
                                     <i>${product.price}</i>
-                                </a>
+                                </button>
+                                <br/><br/>
+                                <button onClick={() => addToStorage(product, CartItemType.BOOKVIEWING)} className="btn btn-primary">
+                                    <span> Book viewing </span>
+                                </button>
                             </section>
                         </div>
                     </ClayCard.Row>

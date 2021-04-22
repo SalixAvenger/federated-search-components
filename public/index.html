@@ -24,10 +24,16 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Combined Search Workflows</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="cartlink" class="hidden">
+        <a href="" onclick="return hideShowCart()">Show cart</a>
+        <i id="cartNum"></i>
+        <!--br/>
+        <a href onclick="localStorage.removeItem('test');window.dispatchEvent(new Event('itemInserted'));return false;">Clear cart</a-->
+    </div>
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -42,7 +48,67 @@
 
 
     <!-- FOXYCART -->
-    <script data-cfasync="false" src="https://cdn.foxycart.com/axielltest/loader.js" async defer></script>
+    <!--script data-cfasync="false" src="https://cdn.foxycart.com/axielltest/loader.js" async defer></script-->
+    <script>
+
+        var originalSetItem = localStorage.setItem;
+
+        localStorage.setItem = function(key, value) {
+            var event = new Event('itemInserted');
+
+            event.value = value; // Optional..
+            event.key = key; // Optional..
+
+
+            //console.log("Applying original function:", this, arguments);
+            originalSetItem.apply(this, arguments);
+
+            window.dispatchEvent(event);
+        };
+
+
+        window.addEventListener('itemInserted', function(e) {
+            console.log("itemInserted event:", e);
+            var cart = localStorage.getItem("test");
+            if(cart) {
+                var cartCount = JSON.parse(cart).products.length;
+                console.log(cartCount);
+                var cartElement = document.querySelectorAll("#cartNum");
+                console.log(cartElement);
+                cartElement[0].innerHTML = cartCount;
+                var cartParent = document.getElementById("cartlink");
+                console.log("Classlist:", cartParent.classList);
+                console.log("Classlist:", document.querySelectorAll("#cartlink")[0].classList);
+                if(cartCount > 0) {
+                    // Show
+                    if (cartParent.classList.contains('hidden')) {
+                        cartParent.classList.remove('hidden');
+                    }
+                } else {
+                    // Hide
+                    if (!cartParent.classList.contains('hidden')) {
+                        cartParent.classList.add('hidden');
+                    }
+                }
+            } else {
+                var cartParent = document.getElementById("cartlink");
+                if (!cartParent.classList.contains('hidden')) {
+                    cartParent.classList.add('hidden');
+                }
+            }
+        });
+
+        function hideShowCart() {
+            console.log("Hiding showing cart");
+            var el = document.getElementById('cart')
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+            return false;
+        }
+    </script>
     <!-- /FOXYCART -->
   </body>
 </html>

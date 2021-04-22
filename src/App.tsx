@@ -8,6 +8,7 @@ import {
 import './App.css';
 import ClayLayout from '@clayui/layout';
 import Shop from './components/Shop';
+import Cart from './components/Cart';
 import "@clayui/css/lib/css/atlas.css";
 
 
@@ -38,50 +39,53 @@ function App() {
 
 
     return (
-        <Router>
-            <ClayLayout.ContainerFluid view className="App">
-                <ClayLayout.Row justify="center">
-                    <ClayLayout.Col size={5}>
-                        <header className="App-header">
-                            <h1>Federated search - Workflow</h1>
-                        </header>
-                        <ul>
-                            <li><Link to="/">HOME</Link></li>
-                            <li><Link to="/shop">Buy digital copies</Link></li>
-                            <li><Link to="/enq">Enquire about an item (not started)</Link></li>
-                            <li><Link to="/book">Book viewing of an item (not started)</Link></li>
+        <div>
+            <Router>
+                <ClayLayout.ContainerFluid view className="App">
+                    <ClayLayout.Row justify="center">
+                        <ClayLayout.Col size={5}>
+                            <header className="App-header">
+                                <h1>Federated search - Workflow</h1>
+                            </header>
+                            <ul>
+                                <li><Link to="/">HOME</Link></li>
+                                <li><Link to="/shop">Buy digital copies</Link></li>
+                                <li><Link to="/enq">Enquire about an item (not started)</Link></li>
+                                <li><Link to="/book">Book viewing of an item (not started)</Link></li>
 
-                        </ul>
-                        <p data-fc-id="minicart" style={{display: "none"}}>
-                            <a href="https://axielltest.foxycart.com/cart?cart=view">
-                                Show cart
-                            </a>
-                        </p>
-                        <hr/>
-                    </ClayLayout.Col>
-                </ClayLayout.Row>
-            </ClayLayout.ContainerFluid>
-            <ClayLayout.ContainerFluid view>
-                <ClayLayout.Row justify="center">
-                    <ClayLayout.Col size={10}>
-                        <Switch>
-                            <Route exact path="/">
-                                <h1>Home</h1>
-                            </Route>
-                            <Route path="/shop">
-                                <Shop products={shuffle(PRODUCTS)}/>
-                            </Route>
-                            <Route path="/enq">
-                                <h1>Enquire</h1>
-                            </Route>
-                            <Route path="/book">
-                                <h1>Book viewing</h1>
-                            </Route>
-                        </Switch>
-                    </ClayLayout.Col>
-                </ClayLayout.Row>
-            </ClayLayout.ContainerFluid>
-        </Router>
+                            </ul>
+                            <p data-fc-id="minicart" style={{display: "none"}}>
+                                <a href="https://axielltest.foxycart.com/cart?cart=view">
+                                    Show cart
+                                </a>
+                            </p>
+                            <hr/>
+                        </ClayLayout.Col>
+                    </ClayLayout.Row>
+                </ClayLayout.ContainerFluid>
+                <ClayLayout.ContainerFluid view>
+                    <ClayLayout.Row justify="center">
+                        <ClayLayout.Col size={10}>
+                            <Switch>
+                                <Route exact path="/">
+                                    <h1>Home</h1>
+                                </Route>
+                                <Route path="/shop">
+                                    <Shop products={shuffle(PRODUCTS)}/>
+                                </Route>
+                                <Route path="/enq">
+                                    <h1>Enquire</h1>
+                                </Route>
+                                <Route path="/book">
+                                    <h1>Book viewing</h1>
+                                </Route>
+                            </Switch>
+                        </ClayLayout.Col>
+                    </ClayLayout.Row>
+                </ClayLayout.ContainerFluid>
+            </Router>
+            <Cart/>
+        </div>
   );
 }
 
