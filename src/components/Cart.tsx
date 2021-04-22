@@ -136,8 +136,7 @@ class Cart extends React.Component<Props, State> {
                         </ClayLayout.Col>
                     </ClayLayout.Row>
                 </ClayLayout.ContainerFluid>
-
-
+                
                 <ClayLayout.ContainerFluid view>
                 {this.state.products.map(
                     (theType, i) =>
