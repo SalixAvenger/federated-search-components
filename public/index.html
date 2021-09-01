@@ -51,9 +51,12 @@
     <!--script data-cfasync="false" src="https://cdn.foxycart.com/axielltest/loader.js" async defer></script-->
     <script>
 
-        var originalSetItem = localStorage.setItem;
+        /*var originalSetItem = localStorage.setItem;
 
         localStorage.setItem = function(key, value) {
+
+            console.log("Setting item...", key, value);
+
             var event = new Event('itemInserted');
 
             event.value = value; // Optional..
@@ -62,6 +65,23 @@
 
             //console.log("Applying original function:", this, arguments);
             originalSetItem.apply(this, arguments);
+
+            window.dispatchEvent(event);
+        };*/
+        var _setItem = Storage.prototype.setItem;
+
+        Storage.prototype.setItem = function(key, value) {
+
+            console.log("Setting item...", key, value);
+
+            var event = new Event('itemInserted');
+
+            event.value = value; // Optional..
+            event.key = key; // Optional..
+
+
+            //console.log("Applying original function:", this, arguments);
+            _setItem.apply(this, arguments);
 
             window.dispatchEvent(event);
         };
